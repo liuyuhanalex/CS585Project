@@ -1,0 +1,25 @@
+1.Extract frames from videos
+2.Resize all the frames
+3.Subtract background from frames
+4.Finish the Upper pattern of ALMD and lower pattern of ALMD
+5.Training all the data 
+6.Random forest for classification
+7.Test our result
+
+Main Algorithm(Feature Extraction)
+
+Input:RDD[Video_Name N,Video_Data D]
+Output:RDD[Video_Name,Feature_Vector V]
+for all(N,D) in RDD[N,D] parallel do
+	flatMap stage:
+		BI = Background_Image
+		for i = 1 to NumberOfFrames-1
+			a = D[i]
+			b = D[i+1]
+			Ba = apply BackgroundSubstraction(a,BI)
+			Bb = apply BackgroundSubstraction(b,BI)
+			V[i] = apply Upper_ALMD(Ba,Bb)
+			Q[i] = apply Lower_ALMD(Ba,Bb)
+		end for
+	add(N,V,Q) to result RDD
+end for
